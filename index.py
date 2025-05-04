@@ -47,24 +47,80 @@ class Estoque:
         print(f"\nValor total geral do estoque: R$ {total_geral:.2f}")
 
 
-# Produtos
-arroz = Produto("Arroz", 50, 5.99)
-feijao = Produto("Feijao", 30, 8.50)
-acucar = Produto("Acucar", 40, 3.75)
+def clear():
+    import os
+    os.system('cls' if os.name == 'nt' else 'clear')
 
-# Criando o estoque
-meu_estoque = Estoque()
+continuar = True
+produtos = []
+estoque = Estoque()
 
-# Adicionando produtos
-meu_estoque.adicionar_produto(arroz)
-meu_estoque.adicionar_produto(feijao)
-meu_estoque.adicionar_produto(acucar)
+while continuar:
+    print("\nMenu de Opções:")
+    print("1. Adicionar Produto")
+    print("2. Listar Produtos")
+    print("3. Atualizar Preço de Produto")
+    print("4. Valor Total do Estoque")
+    print("5. Relatório Completo")
+    print("6. Sair\n")
+    opcao = input("Escolha uma opção: ").strip()
+    
+    if opcao == "1":
+        nome_produto = input("Nome do produto: ").strip().capitalize()
+        quantidade_produto = int(input("Quantidade: ").strip())
+        preco_produto = float(input("Preço: R$ ").strip())
+        novo_produto = Produto(nome_produto, quantidade_produto, preco_produto)
+        
+        estoque.adicionar_produto(novo_produto)
+        produtos.append(novo_produto)
 
-# Listando produtos
-meu_estoque.listar_produtos()
+        clear()
+        print(f"Produto {nome_produto} criado com sucesso!")
 
-# Atualizando preço
-meu_estoque.atualizar_preco_produto("Feijao", 9.20)
-
-# Exibindo relatório completo
-meu_estoque.relatorio_completo()
+    elif opcao == "2":
+        if len(produtos) == 0:
+            print("Nenhum produto adicionado!")
+        else:
+            clear()
+            print("\nLista de Produtos:")
+            for produto in produtos:
+                print(produto.mostrar_info())
+    
+    elif opcao == "3":
+        if len(produtos) == 0:
+            clear()
+            print("Nenhum produto adicionado!")
+        else:
+            nome_produto = input("Nome do produto: ").strip().capitalize()
+            for produto in produtos:
+                if produto.nome == nome_produto:
+                    preco_produto = float(input("Novo preço: R$ ").strip())
+                    clear()
+                    produto.atualizar_preco(preco_produto)
+                    break
+            else:
+                clear()
+                print(f"Produto '{nome_produto}' não encontrado!")
+    
+    elif opcao == "4":
+        if len(produtos) == 0:
+            clear()
+            print("Nenhum produto adicionado!")
+        else:
+            clear()
+            estoque.valor_total()
+    
+    elif opcao == "5":
+        if len(produtos) == 0:
+            clear()
+            print("Nenhum produto adicionado!")
+        else:
+            clear()
+            print("\nRelatório Completo do Estoque:")
+            estoque.relatorio_completo()
+    
+    elif opcao == "6":
+        clear()
+        print("Saindo do programa...")
+        continuar = False
+    
